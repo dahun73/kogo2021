@@ -68,10 +68,12 @@
          * [Taxonomic Composition 에 대해 Bar Plot 그리기](#taxonomic-composition-에-대해-bar-plot-그리기)
      * [8. Group 간 Differential Abundance Test](#8-group-간-differential-abundance-test)
          * [Taxa Collapsing (Taxa level 별로 분석하기)](#taxa-collapsing-taxa-level-별로-분석하기)
-     * [9. Exporting](#9-exporting)
-         * [Taxa Collapsing (Taxa level 별로 분석하기)](#taxa-collapsing-taxa-level-별로-분석하기)
-         * [Phylum 수준에서 분석 (L2)](#phylum-수준에서-분석-l2)
+          * [Phylum 수준에서 분석 (L2)](#phylum-수준에서-분석-l2)
          * [Genus 수준에서 분석 (L6)](#genus-수준에서-분석-l6)
+     * [9. Exporting](#9-exporting)
+         * [Taxa Collapsing (Taxa level 별로 분석
+         하기)](#taxa-collapsing-taxa-level-별로-분석하기)
+        
    
 # QIIME 2 시작하기
 
@@ -222,7 +224,7 @@ qiime feature-table tabulate-seqs \
 </br></br>
 # 4. Filtering Data
 
-(03) tabble-dada2.qzv 파일을 viewer 에서 확인 후, 리드 수가 현저히 낮은 샘플을 제거하기로 함
+위 생성된 03) tabble-dada2.qzv 파일을 viewer 에서 확인 후, 리드 수가 현저히 낮은 샘플을 제거하기로 함
 
 ```sh
 qiime feature-table filter-samples \
@@ -239,6 +241,7 @@ qiime feature-table summarize \
 --o-visualization filtered_100_table.qzv
 --m-sample-metadata-file sample-metadata_ata.tsv
 ```
+- sample 또는 feature 필터 기능은, 실제 많이 사용되는 기능이니 필요 시, [QIIME2홈페이지-Filtering Data](https://docs.qiime2.org/2021.4/tutorials/filtering/) 에서 필요한 부분을 응용하시기 바랍니다.
 
 </br></br>
 
@@ -640,12 +643,13 @@ biom convert -i feature-table.biom -o R-L2-table.tsv --to-tsv
 ```
 - output 파일 31) R-L2-table.tsv 파일을 엑셀이나 메모장으로 열어서 확인합니다. 
 - L2 뿐만아니라 L3 (class), L4 (order), L5 (family), L6 (genus), L7 (species) 까지 같은 방식으로 Exporting 가능합니다.
+- 이 taxa level 별 relative abundance 파일은 그룹별 abundance 비교 box plot 을 새로 그리는 등 다양하게 활용 가능합니다. 
 
 
 </br></br>
 
 ## 수고하셨습니다! </br>
-### 본 스크립트는 잘 보관하셔서 차후 QIIME2 분석하실 때 요긴하게 사용하시길 바랍니다~:poop::grin::heart:
+### 본 스크립트는 잘 보관하셔서 차후 QIIME2 분석하실 때 요긴하게 사용하시길 바랍니다~:poop::sweat_smile::grin::heart:
 
 ---
 본 메뉴얼의 저작권은 [QIIME2](https://docs.qiime2.org/2019.4/citation/) 에 있습니다. <br>
