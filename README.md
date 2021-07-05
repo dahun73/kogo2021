@@ -65,7 +65,7 @@
          * [Beta Diversity 그룹간 비교](#beta-diversity-그룹간-비교)
      * [7. Taxonomic Analysis](#7-taxonomic-analysis)
          * [Classification](#classification)
-         * [Taxonomic Composition Bar Plot 그리기](#taxonomic-composition-bar-plot-그리기)
+         * [Taxonomic Composition 에 대해 Bar Plot 그리기](#taxonomic-composition-에-대해-bar-plot-그리기)
      * [8. Group 간 Differential Abundance Test](#8-group-간-differential-abundance-test)
          * [Taxa Collapsing (Taxa level 별로 분석하기)](#taxa-collapsing-taxa-level-별로-분석하기)
          
@@ -454,7 +454,7 @@ qiime metadata tabulate \
 - 해당 .qzv 파일을 [QIIME2view](https://view.qiime2.org) 에서 열어보세요.
 
 
-> #### Taxonomic Composition Bar Plot 그리기 
+> #### Taxonomic Composition 에 대해 Bar Plot 그리기 
 ```sh
 qiime taxa barplot \
 --i-table filtered_100_table.qza \
