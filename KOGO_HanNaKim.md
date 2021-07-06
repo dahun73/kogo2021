@@ -385,7 +385,7 @@ pwd
 - input file 의 경로와 output file 의 경로에 주의하여 아래 명령어를 실행합니다.
 - Faith's PD (phylogenetic diversity)
 
-- input 파일: **15) core-metrics-results 폴더** 안에 **faith_pd_vector.qza**, 메타데이터 **sample-meteadata_ata.tsv**
+- 필요한 input 파일: **15) core-metrics-results 폴더** 안에 **faith_pd_vector.qza**, 메타데이터 **sample-meteadata_ata.tsv**
 
 ```sh
 qiime diversity alpha-group-significance \
@@ -403,7 +403,7 @@ qiime diversity alpha-group-significance \
     - 모든 plots 은 SVG 형식으로 다운 가능하며, TSV나 CSV 다운로드하여 직접 plot을 새로 그릴 수도 있음
 
 - Pielou's Evenness
-- input 파일: **15) core-metrics-results 폴더** 안에 **evenness_vector.qza**, 메타데이터 **sample-meteadata_ata.tsv**
+- 필요한 input 파일: **15) core-metrics-results 폴더** 안에 **evenness_vector.qza**, 메타데이터 **sample-meteadata_ata.tsv**
 ```sh
 qiime diversity alpha-group-significance \
 --i-alpha-diversity core-metrics-results/evenness_vector.qza \
@@ -424,7 +424,7 @@ qiime diversity alpha-group-significance \
 - sample metadata (phenotype)의 2행에, 변수별 성격 (categorical/numeric)가 미리 입력되어 있어야하며, 연속변수 분석은 특정 하나의 변수 지정이 아닌, metadata에 포함된 모든 연속변수에 대하여 진행됩니다.
 - --p-method 는 spearman 방법과 pearson 둘 중 하나를 사용할 수 있습니다.
 
-- input 파일: **15) core-metrics-results 폴더** 안에 **shannon_vector.qza**, 메타데이터 **sample-meteadata_ata.tsv**
+- 필요한 input 파일: **15) core-metrics-results 폴더** 안에 **shannon_vector.qza**, 메타데이터 **sample-meteadata_ata.tsv**
 
 ```sh
 qiime diversity alpha-correlation \
@@ -433,11 +433,12 @@ qiime diversity alpha-correlation \
 --m-metadata-file sample-metadata_ata.tsv \
 --o-visualization core-metrics-results/qt_shannon.qzv
 ```
-- **15) core-metrics-results 폴더** 에 qt_shannon.qzv 신규 생성 확인
+- output 파일: **15) core-metrics-results 폴더** 안에 **qt_shannon.qzv** 생성 확인
 - 해당 .qzv 파일을 [QIIME2view](https://view.qiime2.org)에서 열어보세요. 
 
 - 결과보기
     - Alpha Correlation : Column 에서 해당 연속변수를 선택하면 각각의 연속변수에 대한 correlation plot 확인가능
+    - 메타데이터의 모든 numeric 변수에 대한 결과 확인 가능
     - spearman (또는 pearson)통계 결과 확인가능
     - plot은 SVG 파일로 다운가능하며, 통계분석의 input 파일 역시 TSV 파일로 다운로드 가능함
 
@@ -445,6 +446,9 @@ qiime diversity alpha-correlation \
  
 > ### Beta Diversity 그룹간 비교 
 - Unweighted UniFrac distance (phylogenetic binary 분석)
+- alpha diversity 분석과는 달리, beta diversity 그룹 비교 분석은, 1개의 변수만 분석됩니다. --m-metadata-column 에서 분석변수 header name 을 반드시 지정해주어야 합니다. (대소문자 정확하게. 여기서는 "Vegetation")
+
+- 필요한 input 파일: **15) core-metrics-results 폴더** 안에 **unweighted_unifrac_distance_matrix.qza**, 메타데이터 **sample-meteadata_ata.tsv**
 ```sh
 qiime diversity beta-group-significance \
 --i-distance-matrix core-metrics-results/unweighted_unifrac_distance_matrix.qza \
@@ -453,7 +457,7 @@ qiime diversity beta-group-significance \
 --o-visualization core-metrics-results/unweighted-unifrac-vegetation-significance.qzv \
 --p-pairwise
 ```
-- **15) core-metrics-results** 에 unweighted-unifrac-vegetation-significance.qzv 신규 생성 확인
+- output 파일: **15) core-metrics-results 폴더** 안에 **unweighted-unifrac-vegetation-significance.qzv** 생성 확인
 - 해당 .qzv 파일을 [QIIME2view](https://view.qiime2.org) 에서 열어보세요. 
 - 결과 보기
     - Overview : PERMAVONA 통계량 확인
@@ -462,6 +466,8 @@ qiime diversity beta-group-significance \
     - 모든 plots 은 PDF 다운 가능하며, TSV나 CSV 다운로드하여 직접 plot을 새로 그릴 수도 있음
 
 - Weighted UniFrac distance (phylogenetic abundance 분석) 
+
+- 필요한 input 파일: **15) core-metrics-results 폴더** 안에 **weighted_unifrac_distance_matrix.qza**, 메타데이터 **sample-meteadata_ata.tsv**
 ```sh
 qiime diversity beta-group-significance \
 --i-distance-matrix core-metrics-results/weighted_unifrac_distance_matrix.qza \
@@ -470,7 +476,7 @@ qiime diversity beta-group-significance \
 --o-visualization core-metrics-results/weighted-unifrac-vegetation-significance.qzv \
 --p-pairwise
 ```
-- **15) core-metrics-results** 에 weighted-unifrac-vegetation-significance.qzv 신규 생성 확인
+- output 파일: **15) core-metrics-results 폴더** 안에 **weighted-unifrac-vegetation-significance.qzv** 생성 확인
 - 해당 .qzv 파일을 [QIIME2view](https://view.qiime2.org) 에서 열어보세요. 
 - Beta diversity 의 다른 index 도 돌려보세요
     - bray_curtis_distance_matrix.qza (non-phylogenetic/abundance)
@@ -489,27 +495,30 @@ qiime diversity beta-group-significance \
 - 그러므로 taxonomic 분석 전에, **08) rep-seqs.qza** 파일에 Machine Learning 방법으로 train된 reference  DB (QIIME2 홈페이지에서 [다운로드](https://docs.qiime2.org/2021.4/data-resources/) 가능)의 taxonomy 정보를 붙이는 작업을 아래와 같이 진행합니다.
     - Silva DB 를 이용한 trained data : silva-138-99-515-806-nb-classifier.qza
     - Classification 작업은 시간이 조금 오래 걸립니다.
+- 필요한 input 파일: **silva-138-99-515-806-nb-classifier.qza**, **08) rep-seqs.qza**
 ```sh
 qiime feature-classifier classify-sklearn \
 --i-classifier silva-138-99-515-806-nb-classifier.qza \
 --i-reads rep-seqs.qza \
 --o-classification silva138_99_taxonomy.qza
 ```
-- 현재 실습폴더에 **16) silva138_99_taxonomy.qza** 폴더가 새로 생성된 것을 확인하세요.
+- output 파일: **16) silva138_99_taxonomy.qza** 생성 확인
 
-- representative sequences 데이터에 taxonomy 가 붙은 것을 확인하기 위해, 위 생성된 .qza 파일을 Visualization
+- 나의 representative sequences 데이터에 taxonomy 가 붙은 것을 확인하기 위해, 위 생성된 .qza 파일을 Visualization
+- 필요한 input 파일: **16) silva138_99_taxonomy.qza**
 ```sh
 qiime metadata tabulate \
 --m-input-file silva138_99_taxonomy.qza \
 --o-visualization silva138_99_taxonomy.qzv
 ```
-- 현재 실습폴더에 **17) silva138_99_taxonomy.qzv** 파일이 새로 생성된 것을 확인하세요.
+- output 파일: **17) silva138_99_taxonomy.qzv** 생성 확인
 
 - 해당 .qzv 파일을 [QIIME2view](https://view.qiime2.org) 에서 열어보세요.
 
 <br/>
 
 > ### Taxonomic Composition 에 대해 Bar Plot 그리기 
+- 필요한 input 파일: **09) filtered_100_table.qza**, **16) silva138_99_taxonomy.qza**, 메타데이터 **sample-meteadata_ata.tsv** 
 ```sh
 qiime taxa barplot \
 --i-table filtered_100_table.qza \
@@ -517,7 +526,7 @@ qiime taxa barplot \
 --m-metadata-file sample-metadata_ata.tsv \
 --o-visualization taxa-bar-plots_silva.qzv
 ```
-- 현재 실습폴더에 **18) taxa-bar-plots_silva.qzv** 파일이 새로 생성된 것을 확인하세요.
+- output 파일: **18) taxa-bar-plots_silva.qzv** 생성 확인
 - 해당 .qzv 파일을 [QIIME2view](https://view.qiime2.org) 에서 열어보세요. 
 
 - Taxonomic Level 탭에서 변경가능 : L1 (Kindom), L2 (Phylum), L3 (Class), L4 (Order), L5 (Family), L6 (Genus), L7 (Species)
@@ -546,6 +555,8 @@ qiime taxa barplot \
 - collapse 단계 없이, filtered_100_table.qza 로 바로 add-pseudocount 부터 들어가면 ASV level 로 분석하게 되며, 분석 시간이 매우 오래 걸릴 수 있습니다.
 
 #### Phylum 수준에서 분석 (L2)
+(1) Taxa collapsing
+- 필요한 input 파일: **09) filtered_100_table.qza**, **16) silva138_99_taxonomy.qza**
 ```sh
 qiime taxa collapse \
 --i-table filtered_100_table.qza \
@@ -553,15 +564,21 @@ qiime taxa collapse \
 --p-level 2 \
 --o-collapsed-table table_L2.qza
 ```
-- 현재 실습폴더에 **19) table_L2.qza** 파일이 새로 생성된 것을 확인하세요.
+- output 파일: **19) table_L2.qza** 생성 확인
+- 이 파일은 차후 .tsv 포멧 등으로 exporting 필요할 시 이용될 수 있습니다.
 
+(2) Add pseudocount
+- 필요한 input 파일: **19) table_L2.qza**
 ```sh
 qiime composition add-pseudocount \
 --i-table table_L2.qza \
 --o-composition-table comp_table_L2.qza
 ```
-- 현재 실습폴더에 **20) comp_table_L2.qza** 폴더가 새로 생성된 것을 확인하세요.
+- output 파일: **20) comp_table_L2.qza** 생성 확인
 
+(3) ANCOM 실행 
+- 필요한 input 파일: **20) comp_table_L2.qza**, 메타데이터 **sample-meteadata_ata.tsv**
+- 비교하고 싶은 그룹 변수 반드시 지정 (--m-metadata-column), 여기서는 "Vegetation"
 ```sh
 qiime composition ancom \
 --i-table comp_table_L2.qza \
@@ -569,7 +586,7 @@ qiime composition ancom \
 --m-metadata-column Vegetation \
 --o-visualization ancom-vegetation_L2.qzv
 ```
-- 현재 실습폴더에 **21) ancom-vegetation_L2.qzv** 파일이 새로 생성된 것을 확인하세요.
+- output 파일: **21) ancom-vegetation_L2.qzv** 생성 확인
 - 해당 .qzv 파일을 [QIIME2view](https://view.qiime2.org) 에서 열어보세요. 
 
   - 현재 분석에서는 total 16 개의 phyla 중, 가티 8개의 phyla와 다르게 두그룹사이에서 유의미하게 차이난 2개의 phyla 가 W값 8을 가지며 TRUE 결과를 제시하고 있습니다.
@@ -580,6 +597,8 @@ qiime composition ancom \
 
 
 #### Genus 수준에서 분석 (L6)
+(1) Taxa collapsing
+- 필요한 input 파일: **09) filtered_100_table.qza**, **16) silva138_99_taxonomy.qza**
 ```sh
 qiime taxa collapse \
 --i-table filtered_100_table.qza \
@@ -587,15 +606,21 @@ qiime taxa collapse \
 --p-level 6 \
 --o-collapsed-table table_L6.qza
 ```
-- 현재 실습폴더에 **22) table_L6.qza** 폴더가 새로 생성된 것을 확인하세요.
+- output 파일: **22) table_L6.qza** 생성 확인
 
+(2) Add pseudocount
+- 필요한 input 파일: **22) table_L6.qza**
 ```sh
 qiime composition add-pseudocount \
 --i-table table_L6.qza \
 --o-composition-table comp_table_L6.qza
 ```
-- 현재 실습폴더에 **23) comp_table_L6.qza** 폴더가 새로 생성된 것을 확인하세요.
+- output 파일: **23) comp_table_L6.qza** 생성 확인
 
+(3) ANCOM 실행 
+- 필요한 input 파일: **23) comp_table_L6.qza**, 메타데이터 **sample-meteadata_ata.tsv**
+
+- 비교하고 싶은 그룹 변수 반드시 지정 (--m-metadata-column), 여기서는 "Vegetation"
 ```sh
 qiime composition ancom \
 --i-table comp_table_L6.qza \
@@ -603,7 +628,7 @@ qiime composition ancom \
 --m-metadata-column Vegetation \
 --o-visualization ancom-vegetation_L6.qzv
 ```
-- 현재 실습폴더에 **24) ancom-vegetation_L2.qzv** 폴더가 새로 생성된 것을 확인하세요.
+- output 파일: **24) ancom-vegetation_L6.qzv** 생성 확인
 
 - 해당 .qzv 파일을 [QIIME2view](https://view.qiime2.org) 에서 열어보세요.   
 
@@ -614,31 +639,35 @@ qiime composition ancom \
 QIIME2 이외에 다른 툴을 이용하여 추가 분석하고 싶을 때, qza 포멧이 아닌 biom 또는 txt 포멧이 필요할 수 있습니다.
 
 > ### *.qza 파일(count data)을 *.biom 포멧으로 Export 하기
-    - 필요한 파일
-        - FeatureTable[Frequency] : 09) filtered_100_table.qza -> features 의 read count 
-        - FeatureData[Taxonomy] : 16) silva138_99_taxonomy.qza
+- 필요한 input파일
+    - FeatureTable[Frequency] : **09) filtered_100_table.qza** -> features 의 read count 
+    - FeatureData[Taxonomy] : **16) silva138_99_taxonomy.qza**
 
 
-- Feature table export
+**- Feature table export**
 ```
 qiime tools export \
 --input-path filtered_100_table.qza \
 --output-path exported_biom
 ```
+- output **폴더**: **25) exported_biom 폴더** 생성 확인
+- output **파일**: **25) exported_biom 폴더** 안에, **feature-table.biom** 생성 확인
 
-- Taxonomy export
+**- Taxonomy export**
 
 ```
 qiime tools export \
 --input-path silva138_99_taxonomy.qza \
 --output-path exported_biom
 ```
-- 현재폴더에 25) exported_biom 폴더 생성된 것을 확인 후, exported_biom/taxonomy.tsv 를 ./biom-taxonomy.tsv 으로 복사본 만들기
+- output 파일: **25) exported_biom 폴더** 안에, **taxonomy.tsv** 생성 확인
+- ./exported_biom/taxonomy.tsv 를 ./biom-taxonomy.tsv 으로 복사본 만들기
 ```
 cp ./exported_biom/taxonomy.tsv ./biom-taxonomy.tsv
 ```
-
-- 현재폴더(./)에 copy 된 26) biom-taxonomy.tsv 파일을 엑셀이나 메모장으로 열기
+- output 파일: **26) biom-taxonomy.tsv** 생성 확인
+- 현재폴더(./)에 copy 된 **26) biom-taxonomy.tsv** 파일을 엑셀이나 메모장으로 열기
+- 첫 행 header 가 다음과 같이,
 
 Feature ID | Taxon | Confidence  
 ---|---|---
@@ -650,18 +679,18 @@ Feature ID | Taxon | Confidence
 
 로 변경한 후 biom-taxonomy.tsv 로 그대로 저장(덮어쓰기)하고 아래 명령어 실행
 
-
 ```
 biom add-metadata \
--i ./exported/feature-table.biom \
+-i ./exported_biom/feature-table.biom \
 -o ./table-with-taxonomy.biom \
 --observation-metadata-fp ./biom-taxonomy.tsv \
 --sc-separated taxonomy
 ```
+- output 파일: **27) table-with-taxonomy.biom** 생성 확인
 
-- filtered_100_table.qza 이 27) table-with-taxonomy.biom 로 변경 완료.
+- filtered_100_table.qza 이 table-with-taxonomy.biom 로 변경 완료
 
-- QIIME2 에서는 feature table 과 taxonomy 파일이 별도로 존재했지만, biom 파일은 이 두가지 파일이 biom 파일 하나에 모두 들어가 있습니다.
+- QIIME2 에서는 feature table 과 taxonomy 파일이 별도로 존재했지만, biom 파일은 이 두가지 파일이 이 최종 biom 파일 하나에 모두 들어가 있습니다.
 </br>
 
 
@@ -673,7 +702,10 @@ biom add-metadata \
 - *.qza -> *.biom -> *.tsv 단계로 진행함.
 - 위에서 biom 파일 exporting 할 때와 같이 ASV 파일을 export 할 수도 있지만, taxonomy level 별로 별도의 파일로도 만들 수 있음
 
+**- Taxa Collapsing**
 - 원하는 taxa level (예, Phylum: L2)로 collapse
+
+- 필요한 input파일: **09) filtered_100_table.qza**, **16) silva138_99_taxonomy.qza**
 ```
 qiime taxa collapse \
 --i-table filtered_100_table.qza \
@@ -681,31 +713,44 @@ qiime taxa collapse \
 --p-level 2 \
 --o-collapsed-table L2-table.qza
 ```
-- output 파일 28) L2-table.qza 생성
+- output 파일: **28) L2-table.qza** 생성 확인
 
-- read count 데이터인 Featuretable[Frequency] 를 relative frequency 데이터인 FeatureTable[RelativeFrequency] 로 변경
+**- Read count 데이터를 Relative abundace 데이터로 변경**
+- Featuretable[Frequency] 를 FeatureTable[RelativeFrequency] 로 변경
+
+- 필요한 input파일: **28) L2-table.qza**
 ```
 qiime feature-table relative-frequency \
 --i-table L2-table.qza \
 --o-relative-frequency-table R-L2-table.qza
 ```
-- 생성된 output 파일 29) R-L2-table.qza 를 biom 파일로 export
+- output 파일: **29) R-L2-table.qza** 생성 확인
+
+**- Relative abundace 데이터를 biom 파일로 export**
 - taxa level 로 collapse 된 파일은 taxonomy 파일을 별도로 export 할 필요 없음
+
+- 필요한 input파일: **29) R-L2-table.qza**
 
 ```
 qiime tools export \
 --input-path R-L2-table.qza \
 --output-path R_L2
 ```
-- 생성된 R_L2 폴더 내에 30) feature-table.biom 생성 확인
+- output **폴더**: **30) R_L2 폴더** 안에, **feature-table.biom** 생성 확인
+
+**- 30) R_L2 폴더로 이동**
+- 해당 폴더로 이동 후, 현재 위치 확인
 ```
 cd ./R_L2
+pwd
 ```
-- feature-table.biom 을 .tsv 파일로 변경
+**- .biom 을 .tsv 포멧으로 변경**
+- 필요한 input파일: **30) R_L2 폴더** 안에 있는 **feature-table.biom**
 ```
 biom convert -i feature-table.biom -o R-L2-table.tsv --to-tsv
 ```
-- output 파일 31) R-L2-table.tsv 파일을 엑셀이나 메모장으로 열어서 확인합니다. 
+- output 파일: **31) R-L2-table.tsv** 생성 확인
+- tsv 파일을 엑셀이나 메모장으로 열어서 확인합니다. 
 - L2 뿐만아니라 L3 (class), L4 (order), L5 (family), L6 (genus), L7 (species) 까지 같은 방식으로 Exporting 가능합니다.
 
 - 이 taxa level 별 relative abundance 파일은 그룹별 abundance 비교 box plot 을 새로 그리는 등 다양하게 활용 가능합니다. 
