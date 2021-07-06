@@ -77,7 +77,7 @@
 
 # QIIME 2 시작하기
 
-- Mac 또는 Window 에서 qiime2 를 활성화 시킵니다.
+
 
 - 실습폴더(바탕화면)로 이동합니다. (사용자마다 실습폴더 위치는 다를 수 있습니다)
     - 예) hanna 컴퓨터의 바탕화면에 있는 실습폴더 
@@ -91,8 +91,9 @@ cd /mnt/c/Users/hanna/Desktop/KOGO_2021/Day2/atacama_tutorial
 
 # 제대로 들어왔는지 현재폴더위치를 확인합니다.
 pwd
-
-# QIIME2 활성화 시키기
+```
+- qiime2 를 활성화 시킵니다.
+```
 conda activate qiime2-2021.4
 ```
 </br></br>
@@ -114,7 +115,7 @@ conda activate qiime2-2021.4
 ---
 > #### 참고
 
-- 만약, Casava 1.8 demultiplexed 형태로 받을 수 없다면, 파일명을 Casava 포멧으로 전체 변경하거나, "Fastq manifest" 포멧을 이용하여 import 해야합니다 ([관련설명: Fastq manifet format](https://docs.qiime2.org/2021.4/tutorials/importing/))
+- 만약, Casava 1.8 demultiplexed 형태로 받을 수 없다면, 연구자가 파일명을 Casava 포멧으로 전체 변경하거나, "Fastq manifest" 포멧을 이용하여 import 해야합니다 ([관련설명: Fastq manifet format](https://docs.qiime2.org/2021.4/tutorials/importing/))
 
 
 ---
@@ -122,7 +123,7 @@ conda activate qiime2-2021.4
 
 
 ### **Importing** 하기
-pwd 했을때, 현재 실습폴더 (Desktop/KOGO_2021/Day2/atacama_tutorial)에 위치해 있다는 가정하에 아래 명령어를 그대로 copy&paste 하시기 바랍니다.
+pwd 했을때, 현재 실습폴더 (Desktop/KOGO_2021/Day2/atacama_tutorial)에 위치해 있다는 가정하에 아래 명령어를 그대로 copy&paste 하시기 바랍니다. (명령어 스크립트 박스 우측상단에 문서 아이콘을 클릭하면 명령어 전체가 한번에 복사됩니다)
 - Casava 1.8 포멧으로 네이밍된 fastq 파일들 모두(모든 샘플) 한 폴더에 넣어두고, 아래 input-path 에 해당 폴더명을 입력합니다.
 ```sh
 qiime tools import \
@@ -132,17 +133,17 @@ qiime tools import \
 --output-path casava_pe_demux.qza
 ```
 - output 파일: **01) casava_pe_demux.qza** 생성확인
-- casava_pe_demux.qza 파일을 Visualtizations
+- casava_pe_demux.qza 파일을 Visualtization 해보겠습니다.
 ```sh
 qiime demux summarize \
 --i-data casava_pe_demux.qza \
 --o-visualization casava_pe_demux.qzv
 ```
-- output 파일: **2) casava_pe_demux.qzv** 생성확인
+- output 파일: **2) casava_pe_demux.qzv** 생성확인 (모든 *qzv 형태의 파일 포멧은 QIIME2 viewer 에서 열 수 있습니다)
 - 위 .qzv 파일을 [QIIME2view](https://view.qiime2.org) 에서 열기. 
    - Overview : 샘플 데이터의 총 시퀀스(리드) 통계 및 샘플 별 시퀀스 수
    - Interactive Quality Plot : Forward 와 Reverse Reads 의 Quality scores 를 Plot 에서 확인하고, QC 단계의 조건들을 고민함
-- fastq 파일 이외에 포멧을 QIIME2 에서 이용하고 싶다면, 
+- fastq 파일 이외에 포멧을 QIIME2 에서 이용하고 싶다면, [QIIME2-Importing data](https://docs.qiime2.org/2021.4/tutorials/importing/) 를 참고하세요.
 
 </br></br>
 
@@ -169,11 +170,11 @@ qiime dada2 denoise-paired \
 --o-denoising-stats stats-dada2.qza
 ```
 
-- **03) table-dada2.qza** 생성확인
-- **04) rep-seqs.qza** 생성확인
-- **05) stats-dada2.qza** 생성확인
+- output 파일: **03) table-dada2.qza** 생성확인
+- output 파일: **04) rep-seqs.qza** 생성확인
+- output 파일: **05) stats-dada2.qza** 생성확인
 
-**- DADA2로 생성된 파일 중, table-dada2.qza 파일은, Feature Table 로서, Downstream analysis 에 계속 사용될 core input file 이니 기억하세요!!**
+**- DADA2로 생성된 파일 중, table-dada2.qza 파일은, Feature Table (read count) 로서, Downstream analysis 에 계속 사용될 core input file 이니 기억하세요!!**
 
 > #### QC Summary 파일 Visualization 
 ```sh
@@ -181,7 +182,7 @@ qiime metadata tabulate \
 --m-input-file stats-dada2.qza \
 --o-visualization stats-dada2.qzv
 ```
-- **06) stats-dada2.qzv** 생성확인
+- output 파일: **06) stats-dada2.qzv** 생성확인
 - 위 .qzv 파일을 [QIIME2view](https://view.qiime2.org) 에서 열기. 
 - 최초 raw data 가 DADA2 작업 후, 최종 어느정도 filtering되었는지 확인가능
     - 샘플별 최초 시퀀스 리드수(input), QC로 filter된 후(filtered, denoised), paired-end 시퀀스 merging후(merged), chimera 제거후(non-chimeric)의 리드수 확인가능
@@ -197,7 +198,7 @@ qiime feature-table summarize \
 --o-visualization table-dada2.qzv \
 --m-sample-metadata-file sample-metadata_ata.tsv
 ```
-- **07) table-dada2.qzv** 생성확인
+- output 파일: **07) table-dada2.qzv** 생성확인
 - 위 .qzv 파일을 [QIIME2view](https://view.qiime2.org) 에서 열기. 
    
    - Overview
@@ -208,7 +209,7 @@ qiime feature-table summarize \
         - phenotype 데이터 정보에 기반하여, 샘플별 리드수, 변수(그룹)별 리드수 확인가능
         - Diversity 분석시 rarefaction 위한 sampling depth 기준 설정을, 여기서 확인함
     - Feature Detail
-        - Amplicon Sequence Variants (ASV)당 frequency
+        - Amplicon Sequence Variants (ASV)당 frequency (read count)
 
 > #### Representative Sequences 확인
 ```sh
@@ -216,7 +217,7 @@ qiime feature-table tabulate-seqs \
 --i-data rep-seqs.qza \
 --o-visualization rep-seqs.qzv
 ```
-- **08) rep-seqs.qzv** 생성확인
+- output 파일: **08) rep-seqs.qzv** 생성확인
 - 위 .qzv 파일을 [QIIME2view](https://view.qiime2.org) 에서 열기. 
    
    - Sequence Length 통계 : ASVs 마다의 평균 시퀀스 length
@@ -226,7 +227,7 @@ qiime feature-table tabulate-seqs \
 </br></br>
 # 4. Filtering Data
 
-위 생성된 03) tabble-dada2.qzv 파일을 viewer 에서 확인 후, 리드 수가 현저히 낮은 샘플을 제거하기로 함
+위 생성된 03) tabble-dada2.qzv 파일을 viewer 에서 확인 후, 리드 수가 현저히 낮은 샘플(이 실습에서는 100 reads 미만)을 제거하기로 함
 
 ```sh
 qiime feature-table filter-samples \
@@ -234,8 +235,8 @@ qiime feature-table filter-samples \
 --p-min-frequency 100 \
 --o-filtered-table filtered_100_table.qza
 ```
-- **09) filtered_100_demux.qza** 파일 생성 확인
-- 이 filtered_100_demux.qza 가 무엇이 바뀌었는지 **10) filtered_100_demux.qzv** 로 만들어서 뷰어로 확인하기 (샘플 수, 리드 수)
+- output 파일: **09) filtered_100_demux.qza** 생성 확인
+- 이 filtered_100_demux.qza 가 무엇이 바뀌었는지 qzv 파일로 만들어서, 뷰어로 확인하기 (샘플 수, 리드 수)
 
 ```sh
 qiime feature-table summarize \
@@ -243,6 +244,8 @@ qiime feature-table summarize \
 --o-visualization filtered_100_table.qzv
 --m-sample-metadata-file sample-metadata_ata.tsv
 ```
+- output 파일: **10) filtered_100_demux.qzv** 생성 확인
+- 위 .qzv 파일을 [QIIME2view](https://view.qiime2.org) 에서 열기. 
 - sample 또는 feature 필터 기능은, 실제 많이 사용되는 기능이니 필요 시, [QIIME2홈페이지-Filtering Data](https://docs.qiime2.org/2021.4/tutorials/filtering/) 에서 필요한 부분을 응용하시기 바랍니다.
 
 </br></br>
