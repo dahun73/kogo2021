@@ -71,8 +71,7 @@
           * [Phylum 수준에서 분석 (L2)](#phylum-수준에서-분석-l2)
          * [Genus 수준에서 분석 (L6)](#genus-수준에서-분석-l6)
      * [9. Exporting](#9-exporting)
-         * [Taxa Collapsing (Taxa level 별로 분석
-         하기)](#taxa-collapsing-taxa-level-별로-분석하기)
+    
         
    
 # QIIME 2 시작하기
