@@ -36,6 +36,7 @@
     - Input files
     	- **casava-18-paired-end-demultiplexed 폴더** : 61 samples 의 paired-end fastq 파일 (V4 region)
         - **sample-metadata_ata.tsv** : phenotype 파일
+    
     - reference DB (Naive Bayes classifiers로 trained 완료)
         - Silva version 138, 99% OTUs, V4 region : **silva-138-99-515-806-nb-classifier.qza**
             
@@ -130,7 +131,10 @@ conda activate qiime2-2021.4
 
 ### **Importing** 하기
 pwd 했을때, 현재 실습폴더 (Desktop/KOGO_2021/Day2/atacama_tutorial)에 위치해 있다는 가정하에 아래 명령어를 그대로 copy&paste 하시기 바랍니다. (명령어 스크립트 박스 우측상단에 문서 아이콘을 클릭하면 명령어 전체가 한번에 복사됩니다)
+- 필요한 input 파일: fastq 데이터
+
 - Casava 1.8 포멧으로 네이밍된 fastq 파일들 모두(모든 샘플) 한 폴더에 넣어두고, 아래 input-path 에 해당 폴더명을 입력합니다.
+
 ```sh
 qiime tools import \
 --type 'SampleData[PairedEndSequencesWithQuality]' \
@@ -138,14 +142,17 @@ qiime tools import \
 --input-format CasavaOneEightSingleLanePerSampleDirFmt \
 --output-path casava_pe_demux.qza
 ```
-- output 파일: **01) casava_pe_demux.qza** 생성확인
-- casava_pe_demux.qza 파일을 Visualtization 해보겠습니다.
+- output 파일: **01) casava_pe_demux.qza** 생성 확인
+
+- **01) casava_pe_demux.qza** 파일을 Visualtization 해보겠습니다.
+
 ```sh
 qiime demux summarize \
 --i-data casava_pe_demux.qza \
 --o-visualization casava_pe_demux.qzv
 ```
-- output 파일: **2) casava_pe_demux.qzv** 생성확인 (모든 *qzv 형태의 파일 포멧은 QIIME2 viewer 에서 열 수 있습니다)
+- output 파일: **2) casava_pe_demux.qzv** 생성 확인 (모든 *qzv 형태의 파일 포멧은 QIIME2 viewer 에서 열 수 있습니다)
+
 - 위 .qzv 파일을 [QIIME2view](https://view.qiime2.org) 에서 열기. 
    - Overview : 샘플 데이터의 총 시퀀스(리드) 통계 및 샘플 별 시퀀스 수
    - Interactive Quality Plot : Forward 와 Reverse Reads 의 Quality scores 를 Plot 에서 확인하고, QC 단계의 조건들을 고민함
@@ -161,11 +168,13 @@ DADA2 에서는, 시퀀스의 QC 뿐만 아니라, paire-end 시퀀싱 Merging �
     - --p-trim-left-f 과 --p-trim-left-r
     - --p-trunc-len-f 과 --p-trunc-len-r
 - truncation 시, paired-end 의 overlap 길이를 반드시 고려하여, 충분한 overlap이 유지되도록 주의요함
+
 - 실습파일: 2x150bp paired end 리드로서, V4 영역(약 250bp) 디자인. read triming 전혀 하지 않아도 50bp 오버랩. 최소 30bp 오버랩구간을 남기려면, 현재 20bp 트리밍이 최대 가능.
 
 <br/>
 
 > ### DADA2 실행
+- 필요한 input 파일: **01) casava_pe_demux.qza** (imported 끝난 fastq 파일 .qza 포멧 형태)
 ```sh
 qiime dada2 denoise-paired \
 --i-demultiplexed-seqs casava_pe_demux.qza \
@@ -178,22 +187,24 @@ qiime dada2 denoise-paired \
 --o-denoising-stats stats-dada2.qza
 ```
 
-- output 파일: **03) table-dada2.qza** 생성확인
-- output 파일: **04) rep-seqs.qza** 생성확인
-- output 파일: **05) stats-dada2.qza** 생성확인
+- output 파일 1: **03) table-dada2.qza** 생성 확인
+- output 파일 2: **04) rep-seqs.qza** 생성 확인
+- output 파일 3: **05) stats-dada2.qza** 생성 확인
 
-**- DADA2로 생성된 파일 중, table-dada2.qza 파일은, Feature Table (read count) 로서, Downstream analysis 에 계속 사용될 core input file 이니 기억하세요!!**
+**- DADA2로 생성된 파일 중, 03) table-dada2.qza 파일은, Feature Table (read count) 로서, Downstream analysis 에 계속 사용될 core input file 이니 기억하세요!!**
 
 <br/>
 
 > ### QC Summary 파일 Visualization 
+- 필요한 input 파일: **05) stats-dada2.qza**
 ```sh
 qiime metadata tabulate \
 --m-input-file stats-dada2.qza \
 --o-visualization stats-dada2.qzv
 ```
-- output 파일: **06) stats-dada2.qzv** 생성확인
+- output 파일: **06) stats-dada2.qzv** 생성 확인
 - 위 .qzv 파일을 [QIIME2view](https://view.qiime2.org) 에서 열기. 
+
 - 최초 raw data 가 DADA2 작업 후, 최종 어느정도 filtering되었는지 확인가능
     - 샘플별 최초 시퀀스 리드수(input), QC로 filter된 후(filtered, denoised), paired-end 시퀀스 merging후(merged), chimera 제거후(non-chimeric)의 리드수 확인가능
     - filtered reads 수가 너무 적게 남았거나하면, trimming 이나 truncation parameter 수를 조정하여 DADA2 를 재실행함
@@ -202,14 +213,14 @@ qiime metadata tabulate \
 
 
 > ### Feature Table Summary 파일 만들기
-
+- 필요한 input 파일: **03) table-dada2.qza** 및 메타데이터 **sample-meteadata_ata.tsv**
 ```sh
 qiime feature-table summarize \
 --i-table table-dada2.qza \
 --o-visualization table-dada2.qzv \
 --m-sample-metadata-file sample-metadata_ata.tsv
 ```
-- output 파일: **07) table-dada2.qzv** 생성확인
+- output 파일: **07) table-dada2.qzv** 생성 확인
 - 위 .qzv 파일을 [QIIME2view](https://view.qiime2.org) 에서 열기. 
    
    - Overview
@@ -225,12 +236,13 @@ qiime feature-table summarize \
 <br/>
 
 > ### Representative Sequences 확인
+- 필요한 input 파일: **04) rep-seqs.qza**
 ```sh
 qiime feature-table tabulate-seqs \
 --i-data rep-seqs.qza \
 --o-visualization rep-seqs.qzv
 ```
-- output 파일: **08) rep-seqs.qzv** 생성확인
+- output 파일: **08) rep-seqs.qzv** 생성 확인
 - 위 .qzv 파일을 [QIIME2view](https://view.qiime2.org) 에서 열기. 
    
    - Sequence Length 통계 : ASVs 마다의 평균 시퀀스 length
@@ -242,6 +254,8 @@ qiime feature-table tabulate-seqs \
 **이 Filtering 단계는 데이터 퀄리티에 따라 옵션이 될 수도, 필수가 될 수도 있습니다.**
 - 위 생성된 03) tabble-dada2.qzv 파일을 viewer 에서 확인 후, 리드 수가 현저히 낮은 샘플(이 실습에서는 100 reads 미만)을 제거하기로 함
 
+- 필요한 input 파일: **03) table-dada2.qza**
+
 ```sh
 qiime feature-table filter-samples \
 --i-table table-dada2.qza \
@@ -250,7 +264,7 @@ qiime feature-table filter-samples \
 ```
 - output 파일: **09) filtered_100_demux.qza** 생성 확인
 - 이 filtered_100_demux.qza 가 무엇이 바뀌었는지 qzv 파일로 만들어서, 뷰어로 확인하기 (샘플 수, 리드 수)
-
+- 필요한 input 파일: **09) filtered_100_demux.qza** 및 메타데이터 **sample-meteadata_ata.tsv**
 ```sh
 qiime feature-table summarize \
 --i-table filtered_100_table.qza \
@@ -259,13 +273,14 @@ qiime feature-table summarize \
 ```
 - output 파일: **10) filtered_100_demux.qzv** 생성 확인
 - 위 .qzv 파일을 [QIIME2view](https://view.qiime2.org) 에서 열기. 
+
 - sample 또는 feature 필터 기능은, 실제 많이 사용되는 기능이니 필요 시, [QIIME2홈페이지-Filtering Data](https://docs.qiime2.org/2021.4/tutorials/filtering/) 에서 필요한 부분을 응용하시기 바랍니다.
 
 </br></br>
 
 # 5. Phylogenetic Diversity 분석을 위한 Phylogenetic Tree 만들기
 
-- 필요한 input 파일은 representative sequences 파일인 **04) rep-seqs.qza** 입니다.
+- 필요한 input 파일: **04) rep-seqs.qza** (representative sequences 파일)
 ```sh
 qiime phylogeny align-to-tree-mafft-fasttree \
 --i-sequences rep-seqs.qza \
@@ -274,10 +289,10 @@ qiime phylogeny align-to-tree-mafft-fasttree \
 --o-tree unrooted-tree.qza \
 --o-rooted-tree rooted-tree.qza
 ```
-- output 파일 1: **11) aligned-rep-seqs.qza** 생성확인
-- output 파일 2: **12) masked-aligned-rep-seqs.qza** 생성확인
-- output 파일 3: **13) unrooted-tree.qza** 생성확인
-- output 파일 4: **14) rooted-tree.qza** 생성확인 => 이 rooted-tree.qza 파일이 phylogenetic diversity 분석에 사용됩니다.
+- output 파일 1: **11) aligned-rep-seqs.qza** 생성 확인
+- output 파일 2: **12) masked-aligned-rep-seqs.qza** 생성 확인
+- output 파일 3: **13) unrooted-tree.qza** 생성 확인
+- output 파일 4: **14) rooted-tree.qza** 생성 확인 => 이 rooted-tree.qza 파일이 phylogenetic diversity 분석에 사용됩니다.
 
 </br></br>
 
@@ -305,7 +320,10 @@ Diversity 분석은, QIIME2의 "diversity" 라는 plugin 을 사용하며, core-
  <br/>
  
 > ### Core Analysis
+- 필요한 input 파일: **09) filtered_100_table.qza**, **14) rooted-tree.qza**, 메타데이터 **sample-meteadata_ata.tsv** 
+
 - --p-sampling-depth 명령어와 함께 해당 depth 숫자를 반드시 적습니다.
+
 ```sh
 qiime diversity core-metrics-phylogenetic \
 --i-phylogeny rooted-tree.qza \
@@ -314,9 +332,11 @@ qiime diversity core-metrics-phylogenetic \
 --m-metadata-file sample-metadata_ata.tsv \
 --output-dir core-metrics-results
 ```
-- output 폴더: **15) core-metrics-results** 폴더가 새로 생성된 것을 확인하세요.
+- output **폴더**: **15) core-metrics-results** 폴더 생성 확인
 - 위 명령어(--output-dir) 실행 전에, 동일이름의 폴더가 존재하면 명령이 실행되지않고 에러가 남. 반드시 작업폴더에 존재하지 않는 New Name 을 --output-dir 뒤에 적습니다.
+
 - **core-metrics-results 폴더**로 들어가보세요.
+
 ```sh
 cd core-metrics-results
 ```
@@ -364,30 +384,36 @@ pwd
 
 - input file 의 경로와 output file 의 경로에 주의하여 아래 명령어를 실행합니다.
 - Faith's PD (phylogenetic diversity)
+
+- input 파일: **15) core-metrics-results 폴더** 안에 **faith_pd_vector.qza**, 메타데이터 **sample-meteadata_ata.tsv**
+
 ```sh
 qiime diversity alpha-group-significance \
 --i-alpha-diversity core-metrics-results/faith_pd_vector.qza \
 --m-metadata-file sample-metadata_ata.tsv \
 --o-visualization core-metrics-results/faith-pd-group-significance.qzv
 ```
-- **15) core-metrics-results** 에 faith-pd-group-significance.qzv 신규 생성 확인
+- output 파일: **15) core-metrics-results** 폴더 안에 **faith-pd-group-significance.qzv** 생성 확인
 - 해당 .qzv 파일을 [QIIME2view](https://view.qiime2.org) 에서 열어보세요. 
      
 - Alpha Diversity Boxplots 확인
-    - Column 탭을 조절하여 비교하고싶은 변수(그룹)별 비교가능
+    - Column 탭을 조절하여 비교하고싶은 변수(그룹)별 비교가능.
+    - 메타데이터의 모든 categorical 변수에 대한 결과 확인 가능
     - Kruska-Wallis 통계량 확인
     - 모든 plots 은 SVG 형식으로 다운 가능하며, TSV나 CSV 다운로드하여 직접 plot을 새로 그릴 수도 있음
 
 - Pielou's Evenness
+- input 파일: **15) core-metrics-results 폴더** 안에 **evenness_vector.qza**, 메타데이터 **sample-meteadata_ata.tsv**
 ```sh
 qiime diversity alpha-group-significance \
 --i-alpha-diversity core-metrics-results/evenness_vector.qza \
 --m-metadata-file sample-metadata_ata.tsv \
 --o-visualization core-metrics-results/evenness-group-significance.qzv
 ```
-- **15) core-metrics-results 폴더** 에 evenness-group-significance.qzv 신규 생성 확인
+- output 파일: **15) core-metrics-results** 폴더 안에 evenness-group-significance.qzv 신규 생성 확인
 - 해당 .qzv 파일을 [QIIME2view](https://view.qiime2.org) 에서 열어보세요. 
-- Alpha diversity 의 다른 index 도 돌려보세요
+
+- Alpha diversity 의 다른 index 도 돌려보세요.
     - observed_otus_vector.qza
     - shannon_vector.qza
 
@@ -398,6 +424,8 @@ qiime diversity alpha-group-significance \
 - sample metadata (phenotype)의 2행에, 변수별 성격 (categorical/numeric)가 미리 입력되어 있어야하며, 연속변수 분석은 특정 하나의 변수 지정이 아닌, metadata에 포함된 모든 연속변수에 대하여 진행됩니다.
 - --p-method 는 spearman 방법과 pearson 둘 중 하나를 사용할 수 있습니다.
 
+- input 파일: **15) core-metrics-results 폴더** 안에 **shannon_vector.qza**, 메타데이터 **sample-meteadata_ata.tsv**
+
 ```sh
 qiime diversity alpha-correlation \
 --i-alpha-diversity core-metrics-results/shannon_vector.qza \
@@ -407,6 +435,7 @@ qiime diversity alpha-correlation \
 ```
 - **15) core-metrics-results 폴더** 에 qt_shannon.qzv 신규 생성 확인
 - 해당 .qzv 파일을 [QIIME2view](https://view.qiime2.org)에서 열어보세요. 
+
 - 결과보기
     - Alpha Correlation : Column 에서 해당 연속변수를 선택하면 각각의 연속변수에 대한 correlation plot 확인가능
     - spearman (또는 pearson)통계 결과 확인가능
@@ -456,6 +485,7 @@ qiime diversity beta-group-significance \
 
 > ### Classification  
 - Taxonomic 분석을 위해서는, 기존 만들어놓은 feature table ( **09) filtered_100_table.qza** )과 representative sequence ( **08) rep-seqs.qza**) 파일 외에, taxonomy (features 의 이름) 정보가 필요합니다.
+
 - 그러므로 taxonomic 분석 전에, **08) rep-seqs.qza** 파일에 Machine Learning 방법으로 train된 reference  DB (QIIME2 홈페이지에서 [다운로드](https://docs.qiime2.org/2021.4/data-resources/) 가능)의 taxonomy 정보를 붙이는 작업을 아래와 같이 진행합니다.
     - Silva DB 를 이용한 trained data : silva-138-99-515-806-nb-classifier.qza
     - Classification 작업은 시간이 조금 오래 걸립니다.
@@ -474,6 +504,7 @@ qiime metadata tabulate \
 --o-visualization silva138_99_taxonomy.qzv
 ```
 - 현재 실습폴더에 **17) silva138_99_taxonomy.qzv** 파일이 새로 생성된 것을 확인하세요.
+
 - 해당 .qzv 파일을 [QIIME2view](https://view.qiime2.org) 에서 열어보세요.
 
 <br/>
@@ -511,6 +542,7 @@ qiime taxa barplot \
 - L2-L7 까지 collapsing 가능
     - 예) L2 Phylume level 로 collapsing 하기
 - 다른 taxa level을 만들때도 아래와 같이 3단계(collapse, add-pseudocount, ancom)를 동일하게 진행해야합니다.
+
 - collapse 단계 없이, filtered_100_table.qza 로 바로 add-pseudocount 부터 들어가면 ASV level 로 분석하게 되며, 분석 시간이 매우 오래 걸릴 수 있습니다.
 
 #### Phylum 수준에서 분석 (L2)
@@ -572,6 +604,7 @@ qiime composition ancom \
 --o-visualization ancom-vegetation_L6.qzv
 ```
 - 현재 실습폴더에 **24) ancom-vegetation_L2.qzv** 폴더가 새로 생성된 것을 확인하세요.
+
 - 해당 .qzv 파일을 [QIIME2view](https://view.qiime2.org) 에서 열어보세요.   
 
 </br></br>
@@ -627,6 +660,7 @@ biom add-metadata \
 ```
 
 - filtered_100_table.qza 이 27) table-with-taxonomy.biom 로 변경 완료.
+
 - QIIME2 에서는 feature table 과 taxonomy 파일이 별도로 존재했지만, biom 파일은 이 두가지 파일이 biom 파일 하나에 모두 들어가 있습니다.
 </br>
 
@@ -673,6 +707,7 @@ biom convert -i feature-table.biom -o R-L2-table.tsv --to-tsv
 ```
 - output 파일 31) R-L2-table.tsv 파일을 엑셀이나 메모장으로 열어서 확인합니다. 
 - L2 뿐만아니라 L3 (class), L4 (order), L5 (family), L6 (genus), L7 (species) 까지 같은 방식으로 Exporting 가능합니다.
+
 - 이 taxa level 별 relative abundance 파일은 그룹별 abundance 비교 box plot 을 새로 그리는 등 다양하게 활용 가능합니다. 
 
 
