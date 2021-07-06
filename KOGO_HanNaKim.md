@@ -262,16 +262,16 @@ qiime feature-table filter-samples \
 --p-min-frequency 100 \
 --o-filtered-table filtered_100_table.qza
 ```
-- output 파일: **09) filtered_100_demux.qza** 생성 확인
-- 이 filtered_100_demux.qza 가 무엇이 바뀌었는지 qzv 파일로 만들어서, 뷰어로 확인하기 (샘플 수, 리드 수)
-- 필요한 input 파일: **09) filtered_100_demux.qza** 및 메타데이터 **sample-meteadata_ata.tsv**
+- output 파일: **09) filtered_100_table.qza** 생성 확인
+- 이 filtered_100_table.qza 가 무엇이 바뀌었는지 qzv 파일로 만들어서, 뷰어로 확인하기 (샘플 수, 리드 수)
+- 필요한 input 파일: **09) filtered_100_table.qza** 및 메타데이터 **sample-meteadata_ata.tsv**
 ```sh
 qiime feature-table summarize \
 --i-table filtered_100_table.qza \
 --o-visualization filtered_100_table.qzv
 --m-sample-metadata-file sample-metadata_ata.tsv
 ```
-- output 파일: **10) filtered_100_demux.qzv** 생성 확인
+- output 파일: **10) filtered_100_table.qzv** 생성 확인
 - 위 .qzv 파일을 [QIIME2view](https://view.qiime2.org) 에서 열기. 
 
 - sample 또는 feature 필터 기능은, 실제 많이 사용되는 기능이니 필요 시, [QIIME2홈페이지-Filtering Data](https://docs.qiime2.org/2021.4/tutorials/filtering/) 에서 필요한 부분을 응용하시기 바랍니다.
@@ -313,7 +313,7 @@ Diversity 분석은, QIIME2의 "diversity" 라는 plugin 을 사용하며, core-
 
 - core-metrics-phylogenetic 방법에서는, FeatureTable[Frequency] 즉, 위에서 생성한 **09) filtered_100_table.qza** 파일을 user-specified depth 로 rarefying 합니다.
 
-- 이를 위하여, **10) filtered_100_demux.qzv** 을 [QIIME2view](https://view.qiime2.org) 의 "Interactive Sample Detail"에서 확인한 후, 적절한 depth를 정합니다. 
+- 이를 위하여, **10) filtered_100_table.qzv** 을 [QIIME2view](https://view.qiime2.org) 의 "Interactive Sample Detail"에서 확인한 후, 적절한 depth를 정합니다. 
 
 - Rarefaction 은 이렇게 정한 기준 depth 로 replacement 없이 subsampling을 하며, 기준 depth 이하의 샘플은 분석에서 제외됩니다. 내 샘플 중 최소 read count를 기준으로 정한다면 분석에 제외되는 샘플은 없게 됩니다.
 
@@ -490,12 +490,12 @@ qiime diversity beta-group-significance \
 # 7. Taxonomic Analysis
 
 > ### Classification  
-- Taxonomic 분석을 위해서는, 기존 만들어놓은 feature table ( **09) filtered_100_table.qza** )과 representative sequence ( **08) rep-seqs.qza**) 파일 외에, taxonomy (features 의 이름) 정보가 필요합니다.
+- Taxonomic 분석을 위해서는, 기존 만들어놓은 feature table (**09) filtered_100_table.qza**)과 representative sequence (**04) rep-seqs.qza**) 파일 외에, taxonomy (features 의 이름) 정보가 필요합니다.
 
-- 그러므로 taxonomic 분석 전에, **08) rep-seqs.qza** 파일에 Machine Learning 방법으로 train된 reference  DB (QIIME2 홈페이지에서 [다운로드](https://docs.qiime2.org/2021.4/data-resources/) 가능)의 taxonomy 정보를 붙이는 작업을 아래와 같이 진행합니다.
+- 그러므로 taxonomic 분석 전에, **04) rep-seqs.qza** 파일에 Machine Learning 방법으로 train된 reference  DB (QIIME2 홈페이지에서 [다운로드](https://docs.qiime2.org/2021.4/data-resources/) 가능)의 taxonomy 정보를 붙이는 작업을 아래와 같이 진행합니다.
     - Silva DB 를 이용한 trained data : silva-138-99-515-806-nb-classifier.qza
     - Classification 작업은 시간이 조금 오래 걸립니다.
-- 필요한 input 파일: **silva-138-99-515-806-nb-classifier.qza**, **08) rep-seqs.qza**
+- 필요한 input 파일: **silva-138-99-515-806-nb-classifier.qza**, **04) rep-seqs.qza**
 ```sh
 qiime feature-classifier classify-sklearn \
 --i-classifier silva-138-99-515-806-nb-classifier.qza \
@@ -749,11 +749,11 @@ pwd
 ```
 biom convert -i feature-table.biom -o R-L2-table.tsv --to-tsv
 ```
-- output 파일: **31) R-L2-table.tsv** 생성 확인
+- output 파일:  **30) R_L2 폴더** 안에 **R-L2-table.tsv** 생성 확인
 - tsv 파일을 엑셀이나 메모장으로 열어서 확인합니다. 
 - L2 뿐만아니라 L3 (class), L4 (order), L5 (family), L6 (genus), L7 (species) 까지 같은 방식으로 Exporting 가능합니다.
 
-- 이 taxa level 별 relative abundance 파일은 그룹별 abundance 비교 box plot 을 새로 그리는 등 다양하게 활용 가능합니다. 
+- 이 taxa level 별 relative abundance 파일(.tsv)은 그룹별 abundance 비교 box plot 을 새로 그리는 등 다양하게 활용 가능합니다. 
 
 
 </br></br>
@@ -762,7 +762,7 @@ biom convert -i feature-table.biom -o R-L2-table.tsv --to-tsv
 ### 본 스크립트는 잘 보관하셔서 차후 QIIME2 분석하실 때 요긴하게 사용하시길 바랍니다~:poop::sweat_smile::grin::heart:
 
 ---
-본 메뉴얼의 저작권은 [QIIME2](https://docs.qiime2.org/2019.4/citation/) 에 있습니다. <br>
+본 메뉴얼의 저작권은 [QIIME2](https://docs.qiime2.org/2021.4/citation/) 에 있습니다. <br>
 강의자료 제작: <span style="color:blue">강북삼성병원 **김한나**</span> (문의: 147942@hanmail.net) 
 ---
 
