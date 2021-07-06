@@ -751,7 +751,7 @@ biom convert -i feature-table.biom -o R-L2-table.tsv --to-tsv
 ```
 - output 파일:  **30) R_L2 폴더** 안에 **R-L2-table.tsv** 생성 확인
 - tsv 파일을 엑셀이나 메모장으로 열어서 확인합니다. 
-- L2 뿐만아니라 L3 (class), L4 (order), L5 (family), L6 (genus), L7 (species) 까지 같은 방식으로 Exporting 가능합니다.
+- L2 뿐만아니라 L3 (class), L4 (order), L5 (family), L6 (genus), L7 (species) 까지 같은 방식으로 Exporting 가능합니다. 연습해보세요~
 
 - 이 taxa level 별 relative abundance 파일(.tsv)은 그룹별 abundance 비교 box plot 을 새로 그리는 등 다양하게 활용 가능합니다. 
 
