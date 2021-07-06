@@ -290,7 +290,7 @@ Diversity 분석은, QIIME2의 "diversity" 라는 plugin 을 사용하며, core-
 - Rarefaction 은 이렇게 정한 기준 depth 로 replacement 없이 subsampling을 하며, 기준 depth 이하의 샘플은 분석에서 제외됩니다. 내 샘플 중 최소 read count를 기준으로 정한다면 분석에 제외되는 샘플은 없게 됩니다.
 
 
-> #### Core Analysis
+> ### Core Analysis
 - --p-sampling-depth 명령어와 함께 해당 depth 숫자를 반드시 적습니다.
 ```sh
 qiime diversity core-metrics-phylogenetic \
@@ -335,9 +335,9 @@ ls
 
     - bray_curtis_emperor.qzv를 [QIIME2view](https://view.qiime2.org) 에서 확인해보세요. 
 
-- core-metrics-results 폴더에서 다시 실습폴더(한단계 상위폴더)로 돌아옵니다.
+- **core-metrics-results 폴더**에서 다시 실습폴더(한단계 상위폴더)로 돌아옵니다.
 ```sh
-# 한단계 상위폴더로 올라가기
+# 한단계 상위폴더로 올라가기 (cd 한칸 띄우고 ..)
 cd ..
 
 # 현재 위치가 바탕화면의 QIIME2실습폴더 아래 atacama_tutorial 폴더 위치가 맞는지 확인하기
@@ -345,7 +345,7 @@ pwd
 
 ```
  
-> #### Alpha Diversity 그룹간 비교
+> ### Alpha Diversity 그룹간 비교
 
 - input file 의 경로와 output file 의 경로에 주의하여 아래 명령어를 실행합니다.
 - Faith's PD (phylogenetic diversity)
@@ -377,7 +377,7 @@ qiime diversity alpha-group-significance \
     - shannon_vector.qza
 
 
-> #### Alpha Diversity 연속변수 분석
+> ### Alpha Diversity 연속변수 분석
 - 그룹(categorical)간 비교 뿐만 아니라, 나이 등의 연속변수(numeric)도 분석가능합니다.
 - sample metadata (phenotype)의 2행에, 변수별 성격 (categorical/numeric)가 미리 입력되어 있어야하며, 연속변수 분석은 특정 하나의 변수 지정이 아닌, metadata에 포함된 모든 연속변수에 대하여 진행됩니다.
 - --p-method 는 spearman 방법과 pearson 둘 중 하나를 사용할 수 있습니다.
@@ -397,7 +397,7 @@ qiime diversity alpha-correlation \
     - plot은 SVG 파일로 다운가능하며, 통계분석의 input 파일 역시 TSV 파일로 다운로드 가능함
 
 
-> #### Beta Diversity 그룹간 비교 
+> ### Beta Diversity 그룹간 비교 
 - Unweighted UniFrac distance (phylogenetic binary 분석)
 ```sh
 qiime diversity beta-group-significance \
