@@ -226,8 +226,8 @@ qiime feature-table tabulate-seqs \
 
 </br></br>
 # 4. Filtering Data
-
-위 생성된 03) tabble-dada2.qzv 파일을 viewer 에서 확인 후, 리드 수가 현저히 낮은 샘플(이 실습에서는 100 reads 미만)을 제거하기로 함
+**이 Filtering 단계는 데이터 퀄리티에 따라 옵션이 될 수도, 필수가 될 수도 있습니다.**
+- 위 생성된 03) tabble-dada2.qzv 파일을 viewer 에서 확인 후, 리드 수가 현저히 낮은 샘플(이 실습에서는 100 reads 미만)을 제거하기로 함
 
 ```sh
 qiime feature-table filter-samples \
@@ -252,6 +252,7 @@ qiime feature-table summarize \
 
 # 5. Phylogenetic Diversity 분석을 위한 Phylogenetic Tree 만들기
 
+- 필요한 input 파일은 representative sequences 파일인 **04) rep-seqs.qza** 입니다.
 ```sh
 qiime phylogeny align-to-tree-mafft-fasttree \
 --i-sequences rep-seqs.qza \
@@ -260,10 +261,10 @@ qiime phylogeny align-to-tree-mafft-fasttree \
 --o-tree unrooted-tree.qza \
 --o-rooted-tree rooted-tree.qza
 ```
-- **11) aligned-rep-seqs.qza** 생성확인
-- **12) masked-aligned-rep-seqs.qza** 생성확인
-- **13) unrooted-tree.qza** 생성확인
-- **14) rooted-tree.qza** 생성확인 => 이 rooted-tree.qza 파일이 phylogenetic diversity 분석에 사용됩니다.
+- output 파일 1: **11) aligned-rep-seqs.qza** 생성확인
+- output 파일 2: **12) masked-aligned-rep-seqs.qza** 생성확인
+- output 파일 3: **13) unrooted-tree.qza** 생성확인
+- output 파일 4: **14) rooted-tree.qza** 생성확인 => 이 rooted-tree.qza 파일이 phylogenetic diversity 분석에 사용됩니다.
 
 </br></br>
 
@@ -283,7 +284,10 @@ Diversity 분석은, QIIME2의 "diversity" 라는 plugin 을 사용하며, core-
     - weighted UniFrac distance (a quantitative measure of community dissimilarity that incorporates phylogenetic relationships between the features)
 
 - core-metrics-phylogenetic 방법에서는, FeatureTable[Frequency] 즉, 위에서 생성한 **09) filtered_100_table.qza** 파일을 user-specified depth 로 rarefying 합니다.
-- 이를 위하여, **10) filtered_100_demux.qzv** 을 [QIIME2view](https://view.qiime2.org) 의 "Interactive Sample Detail"에서 확인한대로, 적절한 depth를 정합니다. 정한 depth 로 replacement 없이 subsampling을 하며, 기준 depth 이하의 샘플은 분석에서 제외됩니다.
+
+- 이를 위하여, **10) filtered_100_demux.qzv** 을 [QIIME2view](https://view.qiime2.org) 의 "Interactive Sample Detail"에서 확인한 후, 적절한 depth를 정합니다. 
+
+- Rarefaction 은 이렇게 정한 기준 depth 로 replacement 없이 subsampling을 하며, 기준 depth 이하의 샘플은 분석에서 제외됩니다. 내 샘플 중 최소 read count를 기준으로 정한다면 분석에 제외되는 샘플은 없게 됩니다.
 
 
 > #### Core Analysis
@@ -296,9 +300,9 @@ qiime diversity core-metrics-phylogenetic \
 --m-metadata-file sample-metadata_ata.tsv \
 --output-dir core-metrics-results
 ```
-- 현재 실습폴더에 **15) core-metrics-results** 폴더가 새로 생성된 것을 확인하세요.
+- output 폴더: **15) core-metrics-results** 폴더가 새로 생성된 것을 확인하세요.
 - 위 명령어(--output-dir) 실행 전에, 동일이름의 폴더가 존재하면 명령이 실행되지않고 에러가 남. 반드시 작업폴더에 존재하지 않는 New Name 을 --output-dir 뒤에 적습니다.
-- core-metrics-results 폴더로 들어가보세요.
+- **core-metrics-results 폴더**로 들어가보세요.
 ```sh
 cd core-metrics-results
 ```
@@ -306,24 +310,26 @@ cd core-metrics-results
 ```sh
 ls
 ```
-- 아래와 같이 확인되며, alpha diversity indices 와 beta diversityi indices 가 섞여서 나열되어있으니, 위 섹션에서 alpha 와 beta 에 각각 해당되는 것을 확인하고 다음 분석에 이용하세요.
-    - bray_curtis_distance_matrix.qza
-    - bray_curtis_emperor.qzv
-    - bray_curtis_pcoa_results.qza
-    - evenness_vector.qza			
-    - faith_pd_vector.qza			
-    - jaccard_distance_matrix.qza		
-    - jaccard_emperor.qzv
-    - jaccard_pcoa_results.qza
-    - observed_features_vector.qza
-    - rarefied_table.qza
-    - shannon_vector.qza
-    - unweighted_unifrac_distance_matrix.qza
-    - unweighted_unifrac_emperor.qzv
-    - unweighted_unifrac_pcoa_results.qza
-    - weighted_unifrac_distance_matrix.qza
-    - weighted_unifrac_emperor.qzv
-    - weighted_unifrac_pcoa_results.qza
+- 아래와 같이 확인되며, alpha diversity indices 와 beta diversityi indices 가 섞여서 알파벳 순서로 나열되어있으니, 위 섹션에서 alpha 와 beta 에 각각 해당되는 것을 확인하고 다음 분석에 이용하세요.
+---
+    bray_curtis_distance_matrix.qza
+    bray_curtis_emperor.qzv
+    bray_curtis_pcoa_results.qza
+    evenness_vector.qza			
+    faith_pd_vector.qza			
+    jaccard_distance_matrix.qza		
+    jaccard_emperor.qzv
+    jaccard_pcoa_results.qza
+    observed_features_vector.qza
+    rarefied_table.qza
+    shannon_vector.qza
+    unweighted_unifrac_distance_matrix.qza
+    unweighted_unifrac_emperor.qzv
+    unweighted_unifrac_pcoa_results.qza
+    weighted_unifrac_distance_matrix.qza
+    weighted_unifrac_emperor.qzv
+    weighted_unifrac_pcoa_results.qza
+---
 - core 분석으로 생성된 파일들은 연구목적의 그룹간 diversity 비교분석(통계)을 위한 input files 이라 생각하시면 되며, 위의 .qza 파일들 자체만으로는 아무것도 알 수 없습니다.
 - 단, core 분석의 beta-diversity 관련 결과 중, *_emperor.qzv 파일은, [QIIME2view](https://view.qiime2.org) 에서 바로 확인가능합니다.
 
