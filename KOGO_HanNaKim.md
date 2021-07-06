@@ -107,7 +107,7 @@ conda activate qiime2-2021.4
     4. direction of the read (i.e. R1 or R2)
     5. set number
     
-- 실험의뢰기관으로부터 받은 fastq 파일 이름이, 위와 같은 5개 구분형태가 아니라면, 되도록 위와같은 형태로 요구하여 받으시는게,
+- 실험 의뢰기관으로부터 받은 fastq 파일 이름이, 위와 같은 5개 구분형태가 아니라면, 되도록 위와같은 형태로 요구하여 받으시는게,
 튜토리얼을 따라가며 작업하시는데 도움이 됩니다.
 
 
@@ -123,6 +123,7 @@ conda activate qiime2-2021.4
 
 ### **Importing** 하기
 pwd 했을때, 현재 실습폴더 (Desktop/KOGO_2021/Day2/atacama_tutorial)에 위치해 있다는 가정하에 아래 명령어를 그대로 copy&paste 하시기 바랍니다.
+- Casava 1.8 포멧으로 네이밍된 fastq 파일들 모두(모든 샘플) 한 폴더에 넣어두고, 아래 input-path 에 해당 폴더명을 입력합니다.
 ```sh
 qiime tools import \
 --type 'SampleData[PairedEndSequencesWithQuality]' \
@@ -130,17 +131,18 @@ qiime tools import \
 --input-format CasavaOneEightSingleLanePerSampleDirFmt \
 --output-path casava_pe_demux.qza
 ```
-- 해당폴더에 **01) casava_pe_demux.qza** 생성확인
+- output 파일: **01) casava_pe_demux.qza** 생성확인
 - casava_pe_demux.qza 파일을 Visualtizations
 ```sh
 qiime demux summarize \
 --i-data casava_pe_demux.qza \
 --o-visualization casava_pe_demux.qzv
 ```
-- **2) casava_pe_demux.qzv** 생성확인
+- output 파일: **2) casava_pe_demux.qzv** 생성확인
 - 위 .qzv 파일을 [QIIME2view](https://view.qiime2.org) 에서 열기. 
    - Overview : 샘플 데이터의 총 시퀀스(리드) 통계 및 샘플 별 시퀀스 수
    - Interactive Quality Plot : Forward 와 Reverse Reads 의 Quality scores 를 Plot 에서 확인하고, QC 단계의 조건들을 고민함
+- fastq 파일 이외에 포멧을 QIIME2 에서 이용하고 싶다면, 
 
 </br></br>
 
@@ -268,7 +270,7 @@ Diversity 분석은, QIIME2의 "diversity" 라는 plugin 을 사용하며, core-
 
 - Alpha diversity
     - Shannon’s diversity index (a quantitative measure of community richness)
-    - Observed OTUs (a qualitative measure of community richness)
+    - Observed Features (a qualitative measure of community richness)
     - Faith’s Phylogenetic Diversity (a qualitiative measure of community richness that incorporates phylogenetic relationships between the features)
     - Evenness (or Pielou’s Evenness; a measure of community evenness)
 - Beta diversity
@@ -310,7 +312,7 @@ ls
     - jaccard_distance_matrix.qza		
     - jaccard_emperor.qzv
     - jaccard_pcoa_results.qza
-    - observed_otus_vector.qza
+    - observed_features_vector.qza
     - rarefied_table.qza
     - shannon_vector.qza
     - unweighted_unifrac_distance_matrix.qza
@@ -445,7 +447,7 @@ qiime metadata tabulate \
 --m-input-file silva138_99_taxonomy.qza \
 --o-visualization silva138_99_taxonomy.qzv
 ```
-- 현재 실습폴더에 **17) silva138_99_taxonomy.qzv** 폴더가 새로 생성된 것을 확인하세요.
+- 현재 실습폴더에 **17) silva138_99_taxonomy.qzv** 파일이 새로 생성된 것을 확인하세요.
 - 해당 .qzv 파일을 [QIIME2view](https://view.qiime2.org) 에서 열어보세요.
 
 
@@ -457,7 +459,7 @@ qiime taxa barplot \
 --m-metadata-file sample-metadata_ata.tsv \
 --o-visualization taxa-bar-plots_silva.qzv
 ```
-- 현재 실습폴더에 **18) taxa-bar-plots_silva.qzv** 폴더가 새로 생성된 것을 확인하세요.
+- 현재 실습폴더에 **18) taxa-bar-plots_silva.qzv** 파일이 새로 생성된 것을 확인하세요.
 - 해당 .qzv 파일을 [QIIME2view](https://view.qiime2.org) 에서 열어보세요. 
 
 - Taxonomic Level 탭에서 변경가능 : L1 (Kindom), L2 (Phylum), L3 (Class), L4 (Order), L5 (Family), L6 (Genus), L7 (Species)
@@ -491,7 +493,7 @@ qiime taxa collapse \
 --p-level 2 \
 --o-collapsed-table table_L2.qza
 ```
-- 현재 실습폴더에 **19) table_L2.qza** 폴더가 새로 생성된 것을 확인하세요.
+- 현재 실습폴더에 **19) table_L2.qza** 파일이 새로 생성된 것을 확인하세요.
 
 ```sh
 qiime composition add-pseudocount \
@@ -507,7 +509,7 @@ qiime composition ancom \
 --m-metadata-column Vegetation \
 --o-visualization ancom-vegetation_L2.qzv
 ```
-- 현재 실습폴더에 **21) ancom-vegetation_L2.qzv** 폴더가 새로 생성된 것을 확인하세요.
+- 현재 실습폴더에 **21) ancom-vegetation_L2.qzv** 파일이 새로 생성된 것을 확인하세요.
 - 해당 .qzv 파일을 [QIIME2view](https://view.qiime2.org) 에서 열어보세요. 
 
   - 현재 분석에서는 total 16 개의 phyla 중, 가티 8개의 phyla와 다르게 두그룹사이에서 유의미하게 차이난 2개의 phyla 가 W값 8을 가지며 TRUE 결과를 제시하고 있습니다.
@@ -621,7 +623,7 @@ qiime taxa collapse \
 
 - read count 데이터인 Featuretable[Frequency] 를 relative frequency 데이터인 FeatureTable[RelativeFrequency] 로 변경
 ```
-qiime feature-table relative-frequency\
+qiime feature-table relative-frequency \
 --i-table L2-table.qza \
 --o-relative-frequency-table R-L2-table.qza
 ```
