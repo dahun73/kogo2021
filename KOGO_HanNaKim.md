@@ -71,9 +71,10 @@
           * [Phylum 수준에서 분석 (L2)](#phylum-수준에서-분석-l2)
          * [Genus 수준에서 분석 (L6)](#genus-수준에서-분석-l6)
      * [9. Exporting](#9-exporting)
-    
+         
         
-   
+<br/><br/>
+
 # QIIME 2 시작하기
 
 - Mac 또는 Window 에서 qiime2 를 활성화 시킵니다.
