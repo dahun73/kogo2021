@@ -157,7 +157,9 @@ DADA2 에서는, 시퀀스의 QC 뿐만 아니라, paire-end 시퀀싱 Merging �
 - truncation 시, paired-end 의 overlap 길이를 반드시 고려하여, 충분한 overlap이 유지되도록 주의요함
 - 실습파일: 2x150bp paired end 리드로서, V4 영역(약 250bp) 디자인. read triming 전혀 하지 않아도 50bp 오버랩. 최소 30bp 오버랩구간을 남기려면, 현재 20bp 트리밍이 최대 가능.
 
-> #### DADA2 실행
+<br/>
+
+> ### DADA2 실행
 ```sh
 qiime dada2 denoise-paired \
 --i-demultiplexed-seqs casava_pe_demux.qza \
@@ -176,7 +178,9 @@ qiime dada2 denoise-paired \
 
 **- DADA2로 생성된 파일 중, table-dada2.qza 파일은, Feature Table (read count) 로서, Downstream analysis 에 계속 사용될 core input file 이니 기억하세요!!**
 
-> #### QC Summary 파일 Visualization 
+<br/>
+
+> ### QC Summary 파일 Visualization 
 ```sh
 qiime metadata tabulate \
 --m-input-file stats-dada2.qza \
@@ -190,7 +194,8 @@ qiime metadata tabulate \
 </br></br>
 # 3. Feature Table and Feature Data Summaries
 
-> #### Feature Table Summary 파일 만들기
+
+> ### Feature Table Summary 파일 만들기
 
 ```sh
 qiime feature-table summarize \
@@ -211,7 +216,9 @@ qiime feature-table summarize \
     - Feature Detail
         - Amplicon Sequence Variants (ASV)당 frequency (read count)
 
-> #### Representative Sequences 확인
+<br/>
+
+> ### Representative Sequences 확인
 ```sh
 qiime feature-table tabulate-seqs \
 --i-data rep-seqs.qza \
@@ -441,7 +448,7 @@ qiime diversity beta-group-significance \
 </br></br>
 # 7. Taxonomic Analysis
 
-> #### Classification  
+> ### Classification  
 - Taxonomic 분석을 위해서는, 기존 만들어놓은 feature table ( **09) filtered_100_table.qza** )과 representative sequence ( **08) rep-seqs.qza**) 파일 외에, taxonomy (features 의 이름) 정보가 필요합니다.
 - 그러므로 taxonomic 분석 전에, **08) rep-seqs.qza** 파일에 Machine Learning 방법으로 train된 reference  DB (QIIME2 홈페이지에서 [다운로드](https://docs.qiime2.org/2021.4/data-resources/) 가능)의 taxonomy 정보를 붙이는 작업을 아래와 같이 진행합니다.
     - Silva DB 를 이용한 trained data : silva-138-99-515-806-nb-classifier.qza
@@ -463,8 +470,9 @@ qiime metadata tabulate \
 - 현재 실습폴더에 **17) silva138_99_taxonomy.qzv** 파일이 새로 생성된 것을 확인하세요.
 - 해당 .qzv 파일을 [QIIME2view](https://view.qiime2.org) 에서 열어보세요.
 
+<br/>
 
-> #### Taxonomic Composition 에 대해 Bar Plot 그리기 
+> ### Taxonomic Composition 에 대해 Bar Plot 그리기 
 ```sh
 qiime taxa barplot \
 --i-table filtered_100_table.qza \
@@ -491,8 +499,9 @@ qiime taxa barplot \
 
 - Taxonomic Analysis 분석을 위해서는, feature table ( **09) filtered_100_table.qza** )와 metadata (**sample-metadata_ata.tsv**) 가 필요합니다.
 
-    
-> #### Taxa Collapsing (Taxa level 별로 분석하기)
+<br/>
+ 
+> ### Taxa Collapsing (Taxa level 별로 분석하기)
 - L2-L7 까지 collapsing 가능
     - 예) L2 Phylume level 로 collapsing 하기
 - 다른 taxa level을 만들때도 아래와 같이 3단계(collapse, add-pseudocount, ancom)를 동일하게 진행해야합니다.
@@ -613,7 +622,7 @@ biom add-metadata \
 
 - filtered_100_table.qza 이 27) table-with-taxonomy.biom 로 변경 완료.
 - QIIME2 에서는 feature table 과 taxonomy 파일이 별도로 존재했지만, biom 파일은 이 두가지 파일이 biom 파일 하나에 모두 들어가 있습니다.
-</br></br>
+</br>
 
 
 > ### *.qza 파일(read count)을 relative abundance.qza 파일로 변경한 후, *.tsv 포멧으로 Export 하기
